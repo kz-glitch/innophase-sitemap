@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>InnoPhase Sitemap Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+[hidden]{display:none!important}
+/* Layout: mirrors the SEO wireframe's sitemap view — top bar, intro, stat tiles, legend, then three columns (current · SEO proposed · our agreed) */
+:root {
+  --bg: #f4f6f5;
+  --surface: #ffffff;
+  --fg: #1d2421;
+  --muted: #5b6662;
+  --line: #dfe5e2;
+  --bar: #1f4a35;
+  --bar-2: #2c6a4b;
+  --bar-fg: #ffffff;
+  --current: #a8641e;
+  --proposed: #2c6a4b;
+  --agreed: #3a3f8f;
+  --hl: #fff4c2;
+  --hl-line: #d9b43a;
+  --t-new: #1e7a4f; --t-move: #2563a8; --t-merged: #7a49b3; --t-same: #6b7480;
+  --t-301: #b8432f; --t-noindex: #8a6b12; --t-fix: #9a5a12;
+  --o-same: #3a3f8f; --o-future: #b06a00; --o-future-bg: #fff3df; --o-tbd: #b3261e; --o-tbd-bg: #fde7e5;
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121715; --surface: #1a201e; --fg: #e6ebe8; --muted: #9aa6a1; --line: #2c3532;
+    --bar: #173a29; --bar-2: #1f5038; --bar-fg: #f2f6f4;
+    --current: #c27a30; --proposed: #3a8a62; --agreed: #6c72d4;
+    --hl: #3b3517; --hl-line: #b8962a;
+    --o-same: #8d93f0; --o-future: #f0a53c; --o-future-bg: #2f2410; --o-tbd: #ff8a7f; --o-tbd-bg: #3a1714;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121715; --surface: #1a201e; --fg: #e6ebe8; --muted: #9aa6a1; --line: #2c3532;
+  --bar: #173a29; --bar-2: #1f5038; --bar-fg: #f2f6f4;
+  --current: #c27a30; --proposed: #3a8a62; --agreed: #6c72d4;
+  --hl: #3b3517; --hl-line: #b8962a;
+  --o-same: #8d93f0; --o-future: #f0a53c; --o-future-bg: #2f2410; --o-tbd: #ff8a7f; --o-tbd-bg: #3a1714;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+
+.topbar { background: var(--bar); color: var(--bar-fg); padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between; }
+.eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; opacity: .9; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 1.15; }
+.topbar .who { font-size: 13px; opacity: .85; }
+.subbar { background: var(--bar-2); color: var(--bar-fg); padding: 7px 20px; font-size: 13px; }
+.subbar b { letter-spacing: .1em; text-transform: uppercase; font-size: 12px; margin-right: 8px; }
+
+.wrap { max-width: 1440px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 56px; }
+h1 { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 34px); line-height: 1.15; margin: 0 0 10px; text-wrap: balance; }
+.intro { color: var(--muted); max-width: 70ch; margin: 0 0 22px; font-size: 16px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 14px 12px; }
+.stat .n { font-family: var(--font-display); font-weight: 700; font-size: 26px; font-variant-numeric: tabular-nums; }
+.stat .l { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.stat.ours { border-color: var(--o-same); }
+.stat.fut { border-color: var(--o-future); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.legend span.item { display: inline-flex; gap: 6px; align-items: center; }
+.legend .sep { width: 1px; height: 18px; background: var(--line); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 18px; font-size: 13px; color: var(--muted); }
+.filters button { font: inherit; font-weight: 600; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--agreed); border-color: var(--agreed); color: #fff; }
+.filters button:focus-visible, .row:focus-visible { outline: 2px solid var(--hl-line); outline-offset: 2px; }
+
+.tag { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #fff; padding: 2px 6px; border-radius: 3px; white-space: nowrap; line-height: 1.5; }
+.t-NEW { background: var(--t-new); } .t-MOVE { background: var(--t-move); } .t-MERGED { background: var(--t-merged); }
+.t-SAMEURL { background: var(--t-same); } .t-301 { background: var(--t-301); } .t-NOINDEX { background: var(--t-noindex); }
+.t-FIX { background: var(--t-fix); } .t-OPT { background: var(--t-new); }
+.o-SAME { background: var(--o-same); }
+.o-FUTURE { background: var(--o-future-bg); color: var(--o-future); box-shadow: inset 0 0 0 1.5px var(--o-future); }
+.o-TBD { background: var(--o-tbd); }
+.o-DROPPED { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--muted); }
+.stat.tbd { border-color: var(--o-tbd); }
+
+.cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 1080px) { .cols { grid-template-columns: 1fr; } }
+.col { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; min-width: 0; }
+.col-h { color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.col-h h2 { margin: 0; font-size: 16px; font-weight: 700; }
+.col-h small { font-size: 12.5px; opacity: .9; }
+.col.current .col-h { background: var(--current); }
+.col.proposed .col-h { background: var(--proposed); }
+.col.agreed .col-h { background: var(--agreed); }
+.col-b { padding: 6px 12px 16px; }
+.sec { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 16px 4px 6px; }
+.row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 5px 4px; border-radius: 4px; cursor: default; transition: background-color .12s; }
+.row .lbl { min-width: 0; }
+.row .note { display: block; font-size: 12px; color: var(--muted); line-height: 1.35; margin-top: 1px; }
+.row .tags { display: flex; gap: 4px; flex-shrink: 0; padding-top: 2px; }
+.row.ind1 .lbl { padding-left: 14px; }
+.row.ind2 .lbl { padding-left: 28px; }
+.row.hl { background: var(--hl); box-shadow: inset 3px 0 0 var(--hl-line); }
+.row.dim { opacity: .28; }
+.row.fut .lbl > span:first-child { color: var(--muted); }
+.row.tbd .lbl > span:first-child { color: var(--o-tbd); font-weight: 600; }
+.row.dropped .lbl > span:first-child { color: var(--muted); text-decoration: line-through; }
+@media (prefers-reduced-motion: reduce) { .row { transition: none; } }
+
+.foot { margin-top: 26px; color: var(--muted); font-size: 13px; max-width: 90ch; }
+.foot ul { padding-left: 18px; margin: 6px 0 0; }
+.foot li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+
+<header class="topbar">
+  <div>
+    <div class="eyebrow">Bambuk Studio · Scope check · Oct 2026</div>
+    <div class="brand">InnoPhase IoT Sitemap Comparison</div>
+  </div>
+  <div class="who">Based on Ambient Array Draft v1 + Bambuk agreed scope (estimate, offer v.3)</div>
+</header>
+<div class="subbar"><b>Sitemap view</b>Current site, SEO proposal and our agreed structure, side by side.</div>
+
+<main class="wrap">
+  <h1>Current vs proposed vs agreed</h1>
+  <p class="intro">Left: innophaseiot.com as crawled by Ambient Array on October 1, 2026. Middle: their proposed structure, with their tags. Right: our agreed structure, mapped to the same sections. Each page there is tagged <b>Same</b> (in our current scope), <b>Future</b> (SEO idea we agree with, parked for Iteration 3) or <b>TBD</b> (we don't agree; to be decided with InnoPhase). Hover any page to highlight where it lands in the other columns.</p>
+
+  <section class="stats" aria-label="Key numbers">
+    <div class="stat"><div class="n">42</div><div class="l">pages in the current menu</div></div>
+    <div class="stat"><div class="n">57</div><div class="l">pages in the SEO proposal</div></div>
+    <div class="stat ours"><div class="n" id="nSame">–</div><div class="l">pages in our agreed scope (Same)</div></div>
+    <div class="stat fut"><div class="n" id="nFuture">–</div><div class="l">SEO ideas we agree with, for Iteration 3 (Future)</div></div>
+    <div class="stat tbd"><div class="n" id="nTbd">–</div><div class="l">items to decide with InnoPhase (TBD)</div></div>
+  </section>
+
+  <div class="legend" aria-label="Tag legend">
+    <span class="item"><span class="tag t-NEW">New</span>new page</span>
+    <span class="item"><span class="tag t-MOVE">Move</span>new URL, 301 from old</span>
+    <span class="item"><span class="tag t-MERGED">Merged</span>several pages combined</span>
+    <span class="item"><span class="tag t-SAMEURL">Same URL</span>unchanged URL</span>
+    <span class="item"><span class="tag t-301">301</span>redirects away</span>
+    <span class="item"><span class="tag t-NOINDEX">Noindex</span>kept, hidden from search</span>
+    <span class="sep" aria-hidden="true"></span>
+    <span class="item"><span class="tag o-SAME">Same</span>in our agreed scope</span>
+    <span class="item"><span class="tag o-FUTURE">Future</span>agreed, Iteration 3</span>
+    <span class="item"><span class="tag o-TBD">TBD</span>decide with InnoPhase</span>
+    <span class="item"><span class="tag o-DROPPED">Dropped</span>already decided, will not exist</span>
+  </div>
+
+  <div class="filters" role="group" aria-label="Filter agreed tags">
+    Show:
+    <button type="button" id="f-all" data-f="all" aria-pressed="true">All pages</button>
+    <button type="button" id="f-same" data-f="SAME" aria-pressed="false">Same only</button>
+    <button type="button" id="f-future" data-f="FUTURE" aria-pressed="false">Future only</button>
+    <button type="button" id="f-tbd" data-f="TBD" aria-pressed="false">TBD only</button>
+  </div>
+
+  <div class="cols">
+    <section class="col current" aria-label="Current site"><div class="col-h"><h2>Current site</h2><small>innophaseiot.com</small></div><div class="col-b" id="c-current"></div></section>
+    <section class="col proposed" aria-label="SEO proposed site"><div class="col-h"><h2>SEO proposal</h2><small>Ambient Array · Draft v1</small></div><div class="col-b" id="c-proposed"></div></section>
+    <section class="col agreed" aria-label="Agreed structure"><div class="col-h"><h2>Agreed structure</h2><small>Bambuk</small></div><div class="col-b" id="c-agreed"></div></section>
+  </div>
+
+  <div class="foot">
+    <strong>TBD items to decide with InnoPhase</strong>
+    <ul>
+      <li>Navigation: the client chose an Atmosic-style menu (Products / Resources / About, Developers under Resources). The SEO proposal uses six top menus plus a Where to Buy button. Every page can be linked from the shorter menu; menu depth is the client's call.</li>
+      <li>Edge AI: the SEO specialist marks it optional and it has no approved keywords. We suggest a section on the Talaria 6 page instead of its own page.</li>
+      <li>Where to Buy: removed per client direction, so it is marked TBD here. If the client confirms removal, the SEO specialist re-targets the redirects that point to /purchase/.</li>
+      <li>Applications: our agreed list is six flat application pages. Smart Home, Building Automation, Industrial IoT and Health &amp; Medical will not exist as pages (already decided with the client); the SEO proposal still keeps them.</li>
+      <li>Technical SEO (URL moves, 24 redirects, noindex, canonical fix, FAQ schema) is accepted in the current scope.</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+// [section, [ [label, tags[], keys[], indent, note] ]]
+const CURRENT = [
+ ["Home", [["Home",["SAMEURL"],["home"]]]],
+ ["Products", [
+   ["Talaria 6 Family of SoCs",["301"],["t6"]],
+   ["Talaria TWO Modules",["301"],["mod"]],
+   ["Talaria TWO System on Chip",["301"],["t2"]]]],
+ ["Applications", [
+   ["Smart Home",["SAMEURL"],["shome"]],
+   ["Wireless Video Camera",["SAMEURL"],["cam"],1],
+   ["Smart Appliances",["SAMEURL"],["appl"],1],
+   ["Smart Switches",["SAMEURL"],["sw"],1],
+   ["Smart Door Locks",["SAMEURL"],["lock"],1],
+   ["Connected Sensors",["SAMEURL"],["sens"],1],
+   ["Hi-Fi Audio",["SAMEURL"],["audio"],1],
+   ["Building Automation",["SAMEURL"],["ba"]],
+   ["Health & Medical",["SAMEURL"],["health"]],
+   ["Industrial IoT",["SAMEURL"],["iiot"]]]],
+ ["Developers", [
+   ["EVK",["SAMEURL"],["evk"]],
+   ["Talaria TWO INP101x Modules",["SAMEURL"],["t2evk"],1],
+   ["STM32 MCUs + Talaria TWO",["SAMEURL"],["stm"],1],
+   ["Bosch Sensor + Talaria TWO",["301"],["s2c"],1],
+   ["TDK Ultrasonic ToF Sensor + Talaria TWO",["301"],["s2c"],1],
+   ["Video Camera Reference Kits",["SAMEURL"],["vck"]],
+   ["Ingenic T23 + Talaria TWO INP1014",["SAMEURL"],["t23"],1],
+   ["Ingenic T31ZX + Talaria TWO INP1014",["SAMEURL"],["t31"],1],
+   ["Ingenic T41ZN + Talaria TWO INP1014/15",["SAMEURL"],["t41"],1],
+   ["SDK",["SAMEURL"],["sdk"]],
+   ["Talaria TWO Standalone SDK",["301"],["t2sdk"],1],
+   ["Talaria TWO Hosted MCU SDK",["301"],["t2sdk"],1],
+   ["Talaria TWO Hosted MPU SDK",["301"],["t2sdk"],1],
+   ["Connected Sensor SDK",["301"],["s2c"],1],
+   ["Matter SDK",["SAMEURL"],["matter"],1],
+   ["ULP Presence Detection",["301"],["presence"],1]]],
+ ["Purchase", [["Purchase (Distributors & Reps)",["SAMEURL"],["wtb"]]]],
+ ["Company", [
+   ["About Us",["SAMEURL"],["about"]],
+   ["Talaria Technology Details",["301"],["tech"]],
+   ["Careers",["SAMEURL"],["careers"]],
+   ["Contact",["SAMEURL"],["contact"]],
+   ["Newsroom",["SAMEURL"],["news"]],
+   ["Press Releases",["SAMEURL"],["press"],1],
+   ["Media Articles",["SAMEURL"],["media"],1],
+   ["Podcasts",["SAMEURL"],["pod"],1],
+   ["Events",["SAMEURL"],["events"],1],
+   ["Partners",["SAMEURL"],["partners"]],
+   ["Blog",["SAMEURL"],["blog"]]]],
+ ["Not in menu", [
+   ["Developer landing page",["SAMEURL"],["devhub"]],
+   ["Wi-Fi Presence Detection (ToF)",["301"],["presence"]],
+   ["STM32 evaluation kit (duplicate)",["301"],["stm"]],
+   ["STM32U5 Matter ADK",["301"],["stm"]],
+   ["Tech Briefs 2023 Product of the Year",["301"],["awards"]],
+   ["Talaria TWO Matter v1.2 (duplicate of press release)",["301"],["press"]],
+   ["Spatial Audio Headset Reference Design",["301"],["audio"]],
+   ["Everything RF magazine mention",["301"],["media"]],
+   ["CES landing page",["301"],["events"]],
+   ["Electronica landing page",["301"],["events"]],
+   ["Region archive (×80, e.g. Texas)",["NOINDEX"],["wtb"]]]],
+ ["Templates", [
+   ["Blog post (sample)",["FIX"],["blogpost"]],
+   ["Press release (sample)",["SAMEURL"],["pressrel"]],
+   ["Distributor detail (sample)",["SAMEURL"],["distdet"]],
+   ["Partner detail (sample)",["SAMEURL"],["partdet"]]]],
+];
+
+const PROPOSED = [
+ ["Home", [["Home",["SAMEURL"],["home"]]]],
+ ["Products", [
+   ["All Products",["NEW"],["allprod"]],
+   ["Talaria 6 Family",["MOVE"],["t6"]],
+   ["INP6120 (2.4 GHz)",["NEW"],["inp6120"],1],
+   ["INP6220 (2.4/5 GHz)",["NEW"],["inp6220"],1],
+   ["Talaria TWO Family",["MOVE"],["t2"]],
+   ["Wi-Fi Modules",["MOVE"],["mod"]],
+   ["Selection Guide",["NEW"],["sel"]]]],
+ ["Technology", [
+   ["Talaria Digital Radio",["MOVE"],["tech"]],
+   ["Ultra-Low-Power Wi-Fi",["NEW"],["ulp"],1],
+   ["Target Wake Time",["NEW"],["twt"],1],
+   ["Hostless Wi-Fi SoC",["NEW"],["hostless"],1],
+   ["Wi-Fi + Bluetooth Multi-Protocol",["NEW"],["multi"],1],
+   ["Matter over Wi-Fi",["NEW"],["mow"],1],
+   ["Bluetooth Channel Sounding",["NEW"],["cs"],1],
+   ["Wi-Fi Sensing",["NEW"],["sensing"],1],
+   ["Security & Compliance",["NEW"],["sec"],1],
+   ["Edge AI",["NEW","OPT"],["edge"],1]]],
+ ["Applications", [
+   ["All Applications",["NEW"],["allapp"]],
+   ["Smart Home",["SAMEURL"],["shome"]],
+   ["Wireless & Battery Cameras",["SAMEURL"],["cam"],1],
+   ["Smart Appliances",["SAMEURL"],["appl"],1],
+   ["Smart Switches & Lighting",["SAMEURL"],["sw"],1],
+   ["Smart Locks & Access Control",["SAMEURL"],["lock"],1],
+   ["Connected Sensors",["SAMEURL"],["sens"],1],
+   ["Hi-Fi Wi-Fi Audio",["SAMEURL"],["audio"],1],
+   ["Presence Detection",["MERGED"],["presence"],1],
+   ["Wearables & Smart Glasses",["NEW"],["wear"],1],
+   ["Building Automation",["SAMEURL"],["ba"]],
+   ["Industrial IoT",["SAMEURL"],["iiot"]],
+   ["Health & Medical",["SAMEURL"],["health"]]]],
+ ["Developers", [
+   ["Developer Hub",["SAMEURL"],["devhub"]],
+   ["Green Tea Studio",["NEW"],["gts"],1],
+   ["Evaluation Kits",["SAMEURL"],["evk"],1],
+   ["Talaria 6 Evaluation Kits",["NEW"],["t6evk"],2],
+   ["Talaria TWO Evaluation Kit",["SAMEURL"],["t2evk"],2],
+   ["STM32 + Talaria TWO",["MERGED"],["stm"],2],
+   ["Sensor-to-Cloud Kits",["MERGED"],["s2c"],2],
+   ["Video Camera Reference Kits",["SAMEURL"],["vck"],1],
+   ["Ingenic T23 Kit",["SAMEURL"],["t23"],2],
+   ["Ingenic T31ZX Kit",["SAMEURL"],["t31"],2],
+   ["Ingenic T41ZN Kit",["SAMEURL"],["t41"],2],
+   ["SDKs",["SAMEURL"],["sdk"],1],
+   ["Talaria TWO SDK",["MERGED"],["t2sdk"],2],
+   ["Matter SDK",["SAMEURL"],["matter"],2]]],
+ ["Resources", [
+   ["Blog",["SAMEURL"],["blog"]],
+   ["Blog post (template)",["SAMEURL"],["blogpost"],1],
+   ["Newsroom",["SAMEURL"],["news"]],
+   ["Press Releases",["SAMEURL"],["press"],1],
+   ["Press release (template)",["SAMEURL"],["pressrel"],2],
+   ["Media Coverage",["SAMEURL"],["media"],1],
+   ["Podcasts",["SAMEURL"],["pod"],1],
+   ["Events",["SAMEURL"],["events"],1],
+   ["Awards",["NEW"],["awards"],1]]],
+ ["Company", [
+   ["About",["SAMEURL"],["about"]],
+   ["Partners",["SAMEURL"],["partners"]],
+   ["Partner detail (template)",["SAMEURL"],["partdet"],1],
+   ["Where to Buy",["SAMEURL"],["wtb"]],
+   ["Distributor / rep detail (template)",["SAMEURL"],["distdet"],1],
+   ["Careers",["SAMEURL"],["careers"]],
+   ["Contact",["SAMEURL"],["contact"]]]],
+];
+
+const AGREED = [
+ ["Home", [["Homepage",["SAME"],["home"],0,"MVP 5 sections, Phase 2 up to 8"]]],
+ ["Products", [
+   ["All Products hub",["FUTURE"],["allprod"],0,"New hub template"],
+   ["Talaria 6 Family of SoCs",["SAME"],["t6"],0,"Product template; new URL accepted"],
+   ["INP6120 page",["TBD"],["inp6120"],1,"For now a section on the Talaria 6 page"],
+   ["INP6220 page",["TBD"],["inp6220"],1,"For now a section; specs not public"],
+   ["Talaria TWO System on Chip",["SAME"],["t2"],0,"Renamed Talaria TWO Family"],
+   ["Talaria TWO Modules",["SAME"],["mod"],0,"Renamed Wi-Fi Modules, adds Talaria 6 modules"],
+   ["Selection Guide",["TBD"],["sel"],0,"New comparison template"]]],
+ ["Technology", [
+   ["Talaria Technology Details",["SAME"],["tech"],0,"Unique page in offer v.3; becomes Technology hub"],
+   ["Ultra-Low-Power Wi-Fi",["FUTURE"],["ulp"],1,"New Topic template; copy from SEO"],
+   ["Target Wake Time",["FUTURE"],["twt"],1],
+   ["Hostless Wi-Fi SoC",["FUTURE"],["hostless"],1],
+   ["Wi-Fi + Bluetooth Multi-Protocol",["FUTURE"],["multi"],1],
+   ["Matter over Wi-Fi",["FUTURE"],["mow"],1],
+   ["Bluetooth Channel Sounding",["FUTURE"],["cs"],1],
+   ["Wi-Fi Sensing",["FUTURE"],["sensing"],1],
+   ["Security & Compliance",["FUTURE"],["sec"],1],
+   ["Edge AI",["TBD"],["edge"],1,"We suggest folding it into the Talaria 6 page; no approved keywords"]]],
+ ["Applications", [
+   ["All Applications hub",["FUTURE"],["allapp"],0,"One list of applications; reuses the Products hub template"],
+   ["Wearables",["SAME"],["wear"]],
+   ["Wireless Camera",["SAME"],["cam"]],
+   ["Smart Appliances",["SAME"],["appl"]],
+   ["Smart Switches",["SAME"],["sw"]],
+   ["Smart Door Locks",["SAME"],["lock"]],
+   ["Connected Sensors",["SAME"],["sens"]],
+   ["Hi-Fi Audio",["FUTURE"],["audio"],0,"Extra application page"],
+   ["Presence Detection",["FUTURE"],["presence"],0,"Extra application page; old URLs 301 here later"],
+   ["Smart Home",["DROPPED"],["shome"],0,"Already decided: will not exist (categories merged into one list)"],
+   ["Building Automation",["DROPPED"],["ba"],0,"Already decided: will not exist"],
+   ["Industrial IoT",["DROPPED"],["iiot"],0,"Already decided: will not exist"],
+   ["Health & Medical",["DROPPED"],["health"],0,"Already decided: will not exist"]]],
+ ["Developers", [
+   ["Resources / Developer hub",["FUTURE"],["devhub"],0,"Includes Portal login"],
+   ["Green Tea Studio",["TBD"],["gts"],1,"Not on the current site"],
+   ["EVK",["SAME"],["evk"],1],
+   ["Talaria 6 Evaluation Kits",["FUTURE"],["t6evk"],2,"Not on the current site"],
+   ["Talaria TWO INP101x Modules",["SAME"],["t2evk"],2],
+   ["STM32 MCUs + Talaria TWO",["SAME"],["stm"],2],
+   ["Bosch Sensor + Talaria TWO",["SAME"],["s2c"],2,"SEO merges into Sensor-to-Cloud Kits"],
+   ["TDK Ultrasonic ToF Sensor + Talaria TWO",["SAME"],["s2c"],2,"SEO merges into Sensor-to-Cloud Kits"],
+   ["Video Camera Reference Kits",["SAME"],["vck"],1],
+   ["Ingenic T23 + Talaria TWO INP1014 Module",["SAME"],["t23"],2],
+   ["Ingenic T31ZX + Talaria TWO INP1014 Module",["SAME"],["t31"],2],
+   ["Ingenic T41ZN + Talaria TWO INP1014/15 Module",["SAME"],["t41"],2],
+   ["SDK",["SAME"],["sdk"],1],
+   ["Talaria TWO Standalone SDK",["SAME"],["t2sdk"],2,"SEO merges into Talaria TWO SDK"],
+   ["Talaria TWO Hosted MCU SDK",["SAME"],["t2sdk"],2,"SEO merges into Talaria TWO SDK"],
+   ["Talaria TWO Hosted MPU SDK",["SAME"],["t2sdk"],2,"SEO merges into Talaria TWO SDK"],
+   ["Connected Sensor SDK",["SAME"],["s2c"],2,"SEO merges into Sensor-to-Cloud Kits"],
+   ["Matter SDK",["SAME"],["matter"],2],
+   ["ULP Presence Detection",["SAME"],["presence"],2,"SEO moves it to Applications › Presence Detection"],
+   ["Portal: Login, Registration, Dashboard",["SAME"],["portal"],0,"Kept by SEO, set to noindex"]]],
+ ["Resources", [
+   ["Blog",["SAME"],["blog"],0,"Content template (list + detail)"],
+   ["Blog post",["SAME"],["blogpost"],1,"Canonical fix accepted"],
+   ["Newsroom",["SAME"],["news"]],
+   ["Press Releases",["SAME"],["press"],1],
+   ["Press release detail",["SAME"],["pressrel"],2],
+   ["Media Articles",["SAME"],["media"],1],
+   ["Podcasts",["DROPPED"],["pod"],1,"Already decided: will not exist"],
+   ["Events",["SAME"],["events"],1,"Events list + detail templates"],
+   ["Awards → section on About Us",["SAME"],["awards"],1,"Not a separate page: optimized and placed on the About Us page"]]],
+ ["Company", [
+   ["About Us",["SAME"],["about","awards"],0,"Includes the Awards section"],
+   ["Partners",["SAME"],["partners"]],
+   ["Where to Buy",["TBD"],["wtb"],0,"Removed per client direction; SEO wants it back"],
+   ["Distributor detail",["TBD"],["distdet"],1,"Goes with Where to Buy"],
+   ["Careers",["SAME"],["careers"]],
+   ["Contact",["SAME"],["contact"]]]],
+ ["Legal", [
+   ["Privacy Policy",["SAME"],["legal"]],
+   ["Terms of Use",["SAME"],["legal"]]]],
+];
+
+const LABELS = { SAMEURL: "Same URL", FIX: "Fix canonical", OPT: "Optional", SAME: "Same", FUTURE: "Future", TBD: "TBD", DROPPED: "Dropped" };
+function render(target, data, ours) {
+  const el = document.getElementById(target);
+  const frag = document.createDocumentFragment();
+  for (const [sec, items] of data) {
+    const h = document.createElement("div");
+    h.className = "sec"; h.textContent = sec;
+    frag.appendChild(h);
+    for (const [label, tags, keys, ind = 0, note] of items) {
+      const r = document.createElement("div");
+      r.className = "row" + (ind ? " ind" + ind : "") + (ours && tags[0] === "FUTURE" ? " fut" : "") + (ours && tags[0] === "TBD" ? " tbd" : "") + (ours && tags[0] === "DROPPED" ? " dropped" : "");
+      r.tabIndex = 0;
+      r.id = target.replace("c-", "") + "-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      r.dataset.keys = keys.join(" ");
+      if (ours) r.dataset.ours = tags[0];
+      const l = document.createElement("span");
+      l.className = "lbl";
+      const t = document.createElement("span"); t.textContent = label; l.appendChild(t);
+      if (note) { const n = document.createElement("span"); n.className = "note"; n.textContent = note; l.appendChild(n); }
+      const tg = document.createElement("span"); tg.className = "tags";
+      for (const k of tags) {
+        const s = document.createElement("span");
+        s.className = "tag " + (ours ? "o-" : "t-") + k;
+        s.textContent = LABELS[k] || k;
+        tg.appendChild(s);
+      }
+      r.append(l, tg);
+      frag.appendChild(r);
+    }
+  }
+  el.appendChild(frag);
+}
+render("c-current", CURRENT, false);
+render("c-proposed", PROPOSED, false);
+render("c-agreed", AGREED, true);
+
+const rows = [...document.querySelectorAll(".row")];
+document.getElementById("nSame").textContent = rows.filter(r => r.dataset.ours === "SAME").length;
+document.getElementById("nFuture").textContent = rows.filter(r => r.dataset.ours === "FUTURE").length;
+document.getElementById("nTbd").textContent = rows.filter(r => r.dataset.ours === "TBD").length;
+
+// key -> agreed status, so filters can dim current/proposed rows too
+const status = {};
+rows.filter(r => r.dataset.ours).forEach(r => r.dataset.keys.split(" ").forEach(k => status[k] = r.dataset.ours));
+
+function highlight(src, on) {
+  const keys = new Set(src.dataset.keys.split(" "));
+  rows.forEach(r => {
+    if (r.dataset.keys.split(" ").some(k => keys.has(k))) r.classList.toggle("hl", on);
+  });
+}
+rows.forEach(r => {
+  r.addEventListener("mouseenter", () => highlight(r, true));
+  r.addEventListener("mouseleave", () => highlight(r, false));
+  r.addEventListener("focus", () => highlight(r, true));
+  r.addEventListener("blur", () => highlight(r, false));
+});
+
+function applyFilter(f) {
+  document.querySelectorAll(".filters button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.f === f)));
+  rows.forEach(r => {
+    if (f === "all") { r.classList.remove("dim"); return; }
+    const st = r.dataset.keys.split(" ").map(k => status[k]);
+    r.classList.toggle("dim", !st.includes(f));
+  });
+}
+document.querySelectorAll(".filters button").forEach(b => b.addEventListener("click", () => applyFilter(b.dataset.f)));
+</script>
+
+</body>
+</html>
